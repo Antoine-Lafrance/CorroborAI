@@ -1,0 +1,22 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "corroborai-web",
+      "runtimeExecutable": ".venv/bin/uvicorn",
+      "runtimeArgs": [
+        "app.server:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000"
+      ],
+      "port": 8000
+    },
+    {
+      "name": "corroborai-attach",
+      "url": "http://localhost:8000",
+      "port": 8000
+    }
+  ]
+}

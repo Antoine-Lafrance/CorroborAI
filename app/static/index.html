@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CorroborIA</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231f2a37'/><path d='M9 16.5l4.5 4.5L23 11.5' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 16.5l4.5 4.5L23 11.5"/></svg></span>
+      <div>
+        <div class="brand-name">CorroborIA</div>
+        <div class="brand-sub">Système A – RH ↔ Système B – Temps</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <label class="ds-select">
+        <span>Jeu de données</span>
+        <select id="dataset"></select>
+      </label>
+      <a class="btn btn-primary" id="export-xlsx" href="/api/export.xlsx">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 16h12"/></svg>
+        Rapport Excel
+      </a>
+      <a class="btn" id="export-csv" href="/api/export.csv">CSV</a>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidenav" aria-label="Sections">
+      <a href="#overview" data-view="overview">Vue d'ensemble</a>
+      <a href="#investigate" data-view="investigate">À investiguer <span class="count" id="nav-todo"></span></a>
+      <a href="#all" data-view="all">Toutes les vérifications</a>
+      <a href="#demo" data-view="demo">Démonstration</a>
+      <a href="#rules" data-view="rules">Règles &amp; IA</a>
+      <a href="#data" data-view="data">Données &amp; décisions</a>
+    </nav>
+    <main id="main" tabindex="-1">
+      <div class="loading" id="loading">Corroboration en cours…</div>
+    </main>
+  </div>
+
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Détail du verdict">
+    <div class="drawer-head">
+      <button class="icon-btn" id="drawer-close" aria-label="Fermer">
+        <svg viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="tooltip" id="tooltip" role="tooltip"></div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

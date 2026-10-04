@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schéma CorroborIA</title>
+<style>
+:root{--bg:#fff;--fg:#1f1f1d;--muted:#5f5e5a;--line:#888780;--border:#b4b2a9;
+--purple-f:#EEEDFE;--purple-s:#534AB7;--purple-t:#3C3489;--gray-f:#F1EFE8;--gray-s:#5F5E5A;--gray-t:#444441;
+--green-f:#EAF3DE;--green-s:#3B6D11;--green-t:#27500A;--teal-f:#E1F5EE;--teal-s:#0F6E56;--teal-t:#085041;
+--red-f:#FCEBEB;--red-s:#A32D2D;--red-t:#791F1F;--amber-f:#FAEEDA;--amber-s:#854F0B;--amber-t:#633806}
+@media (prefers-color-scheme:dark){:root{--bg:#1f1f1d;--fg:#f1efe8;--muted:#b4b2a9;--line:#888780;--border:#5f5e5a;
+--purple-f:#3C3489;--purple-s:#AFA9EC;--purple-t:#EEEDFE;--gray-f:#444441;--gray-s:#B4B2A9;--gray-t:#F1EFE8;
+--green-f:#27500A;--green-s:#97C459;--green-t:#EAF3DE;--teal-f:#085041;--teal-s:#5DCAA5;--teal-t:#E1F5EE;
+--red-f:#791F1F;--red-s:#F09595;--red-t:#FCEBEB;--amber-f:#633806;--amber-s:#EF9F27;--amber-t:#FAEEDA}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:22px;font-weight:600;margin:0 0 4px}h2{font-size:18px;font-weight:600;margin:32px 0 4px}
+p{color:var(--muted);margin:0 0 12px}
+svg{width:100%;height:auto;display:block}
+svg text{font-family:system-ui,-apple-system,sans-serif}
+.th{font-size:14px;font-weight:600}.ts{font-size:12px}
+.purple rect{fill:var(--purple-f);stroke:var(--purple-s)}.purple .th{fill:var(--purple-t)}.purple .ts{fill:var(--purple-s)}
+.gray rect{fill:var(--gray-f);stroke:var(--gray-s)}.gray .th{fill:var(--gray-t)}.gray .ts{fill:var(--gray-s)}
+.green rect{fill:var(--green-f);stroke:var(--green-s)}.green .th{fill:var(--green-t)}.green .ts{fill:var(--green-s)}
+.teal rect{fill:var(--teal-f);stroke:var(--teal-s)}.teal .th{fill:var(--teal-t)}.teal .ts{fill:var(--teal-s)}
+.red rect{fill:var(--red-f);stroke:var(--red-s)}.red .th{fill:var(--red-t)}.red .ts{fill:var(--red-s)}
+.amber rect{fill:var(--amber-f);stroke:var(--amber-s)}.amber .th{fill:var(--amber-t)}.amber .ts{fill:var(--amber-s)}
+.arr{stroke:var(--line);stroke-width:1.2;fill:none}.hl{stroke:#D85A30;stroke-width:2.2;fill:none}
+.leader{stroke:var(--line);stroke-width:1;stroke-dasharray:3 3}
+.dash{fill:none;stroke:var(--border);stroke-dasharray:4 3}.free{fill:var(--fg)}.freem{fill:var(--muted)}
+</style></head><body><main>
+<h1>CorroborIA : baseline déterministe</h1>
+<p>Comment le code transforme les extractions en verdicts traçables.</p>
+
+<h2>1. Pipeline</h2>
+<p>Chaque boîte violette est un module de <code>corroborai/</code>. Les chiffres viennent de l'exécution sur les données fournies.</p>
+<svg viewBox="0 0 680 626" role="img" aria-label="Pipeline CorroborIA">
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="gray"><rect x="40" y="40" width="180" height="56" rx="4"/><text class="th" x="130" y="63" text-anchor="middle">Source RH</text><text class="ts" x="130" y="81" text-anchor="middle">23 affectations</text></g>
+<g class="gray"><rect x="250" y="40" width="180" height="56" rx="4"/><text class="th" x="340" y="63" text-anchor="middle">Cible Temps</text><text class="ts" x="340" y="81" text-anchor="middle">22 lignes, 79 colonnes</text></g>
+<g class="gray"><rect x="460" y="40" width="180" height="56" rx="4"/><text class="th" x="550" y="63" text-anchor="middle">Référentiels</text><text class="ts" x="550" y="81" text-anchor="middle">Détail poste, motifs</text></g>
+<line x1="130" y1="96" x2="210" y2="128" class="arr" marker-end="url(#a)"/>
+<line x1="340" y1="96" x2="300" y2="128" class="arr" marker-end="url(#a)"/>
+<line x1="550" y1="96" x2="390" y2="128" class="arr" marker-end="url(#a)"/>
+<g class="purple"><rect x="150" y="130" width="300" height="56" rx="4"/><text class="th" x="300" y="153" text-anchor="middle">loaders + normalize</text><text class="ts" x="300" y="171" text-anchor="middle">Dates, vides, accents, encodage</text></g>
+<line x1="300" y1="186" x2="300" y2="224" class="arr" marker-end="url(#a)"/>
+<g class="purple"><rect x="150" y="226" width="300" height="56" rx="4"/><text class="th" x="300" y="249" text-anchor="middle">engine · appariement</text><text class="ts" x="300" y="267" text-anchor="middle">Matricule, emploi, type, date</text></g>
+<line x1="450" y1="254" x2="478" y2="254" class="arr" marker-end="url(#a)"/>
+<g class="red"><rect x="480" y="226" width="160" height="56" rx="4"/><text class="th" x="560" y="249" text-anchor="middle">Ligne orpheline</text><text class="ts" x="560" y="267" text-anchor="middle">R-MATCH → anomalie</text></g>
+<line x1="300" y1="282" x2="300" y2="320" class="arr" marker-end="url(#a)"/>
+<g class="purple"><rect x="150" y="322" width="300" height="56" rx="4"/><text class="th" x="300" y="345" text-anchor="middle">rules · 24 arbres</text><text class="ts" x="300" y="363" text-anchor="middle">Un arbre par champ cible</text></g>
+<line x1="450" y1="350" x2="480" y2="350" class="leader"/>
+<g class="gray"><rect x="480" y="322" width="160" height="56" rx="4"/><text class="th" x="560" y="345" text-anchor="middle">tree · trace</text><text class="ts" x="560" y="363" text-anchor="middle">Chaque nœud visité</text></g>
+<line x1="270" y1="378" x2="125" y2="428" class="arr" marker-end="url(#a)"/>
+<line x1="290" y1="378" x2="265" y2="428" class="arr" marker-end="url(#a)"/>
+<line x1="310" y1="378" x2="410" y2="428" class="arr" marker-end="url(#a)"/>
+<line x1="330" y1="378" x2="555" y2="428" class="arr" marker-end="url(#a)"/>
+<g class="green"><rect x="50" y="430" width="130" height="56" rx="4"/><text class="th" x="115" y="453" text-anchor="middle">Conforme</text><text class="ts" x="115" y="471" text-anchor="middle">441 champs</text></g>
+<g class="teal"><rect x="200" y="430" width="130" height="56" rx="4"/><text class="th" x="265" y="453" text-anchor="middle">Écart justifié</text><text class="ts" x="265" y="471" text-anchor="middle">26 champs</text></g>
+<g class="red"><rect x="350" y="430" width="130" height="56" rx="4"/><text class="th" x="415" y="453" text-anchor="middle">Anomalie</text><text class="ts" x="415" y="471" text-anchor="middle">10 cas</text></g>
+<g class="amber"><rect x="500" y="430" width="130" height="56" rx="4"/><text class="th" x="565" y="453" text-anchor="middle">Ambigu</text><text class="ts" x="565" y="471" text-anchor="middle">52 champs</text></g>
+<line x1="115" y1="486" x2="115" y2="528" class="arr" marker-end="url(#a)"/>
+<line x1="265" y1="486" x2="265" y2="528" class="arr" marker-end="url(#a)"/>
+<line x1="415" y1="486" x2="415" y2="528" class="arr" marker-end="url(#a)"/>
+<line x1="565" y1="486" x2="565" y2="528" class="arr" marker-end="url(#a)"/>
+<g class="purple"><rect x="50" y="530" width="400" height="56" rx="4"/><text class="th" x="250" y="553" text-anchor="middle">report · Excel + CSV</text><text class="ts" x="250" y="571" text-anchor="middle">Verdict, règle, chemin, justification</text></g>
+<rect x="490" y="530" width="150" height="56" rx="4" class="dash"/><text class="th free" x="565" y="553" text-anchor="middle">Couche IA</text><text class="ts freem" x="565" y="571" text-anchor="middle">Prochaine étape</text>
+<line x1="490" y1="558" x2="452" y2="558" class="arr" stroke-dasharray="4 3" marker-end="url(#a)"/>
+</svg>
+
+<h2>2. Un arbre de décision : contractTypeCode (R-CT)</h2>
+<p>Le moteur pose les questions de haut en bas ; le trait orange est le chemin réellement suivi pour l'employé 7254364.</p>
+<svg viewBox="0 0 680 620" role="img" aria-label="Arbre R-CT">
+<defs><marker id="b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="purple"><rect x="240" y="40" width="200" height="44" rx="4"/><text class="th" x="340" y="67" text-anchor="middle">CatégorieEmploi ?</text></g>
+<line x1="320" y1="84" x2="160" y2="128" class="hl" marker-end="url(#b)"/>
+<line x1="340" y1="84" x2="340" y2="128" class="arr" marker-end="url(#b)"/>
+<line x1="360" y1="84" x2="530" y2="128" class="arr" marker-end="url(#b)"/>
+<g class="purple"><rect x="60" y="130" width="180" height="56" rx="4"/><text class="th" x="150" y="153" text-anchor="middle">EstPermanent ?</text><text class="ts" x="150" y="171" text-anchor="middle">si catégorie V</text></g>
+<g class="gray"><rect x="270" y="130" width="140" height="56" rx="4"/><text class="th" x="340" y="153" text-anchor="middle">Attendu WHX</text><text class="ts" x="340" y="171" text-anchor="middle">si catégorie O</text></g>
+<g class="gray"><rect x="440" y="130" width="200" height="56" rx="4"/><text class="th" x="540" y="153" text-anchor="middle">Attendu KELH, CEGQ…</text><text class="ts" x="540" y="171" text-anchor="middle">si T, M, R, J, Z, Q</text></g>
+<line x1="130" y1="186" x2="115" y2="218" class="hl" marker-end="url(#b)"/>
+<line x1="170" y1="186" x2="255" y2="218" class="arr" marker-end="url(#b)"/>
+<g class="purple"><rect x="40" y="220" width="150" height="56" rx="4"/><text class="th" x="115" y="243" text-anchor="middle">EstTempsPlein ?</text><text class="ts" x="115" y="261" text-anchor="middle">si permanent</text></g>
+<g class="amber"><rect x="200" y="220" width="120" height="56" rx="4"/><text class="th" x="260" y="243" text-anchor="middle">Ambigu</text><text class="ts" x="260" y="261" text-anchor="middle">non permanent</text></g>
+<line x1="100" y1="276" x2="100" y2="308" class="arr" marker-end="url(#b)"/>
+<line x1="140" y1="276" x2="235" y2="308" class="hl" marker-end="url(#b)"/>
+<g class="gray"><rect x="40" y="310" width="130" height="56" rx="4"/><text class="th" x="105" y="333" text-anchor="middle">Attendu JWN</text><text class="ts" x="105" y="351" text-anchor="middle">temps plein</text></g>
+<g class="gray"><rect x="180" y="310" width="140" height="56" rx="4"/><text class="th" x="250" y="333" text-anchor="middle">Attendu XFLR</text><text class="ts" x="250" y="351" text-anchor="middle">temps partiel</text></g>
+<line x1="105" y1="366" x2="215" y2="408" class="arr" marker-end="url(#b)"/>
+<line x1="260" y1="366" x2="290" y2="408" class="hl" marker-end="url(#b)"/>
+<line x1="340" y1="186" x2="340" y2="408" class="arr" marker-end="url(#b)"/>
+<path d="M600 186 L600 432 L492 432" class="arr" marker-end="url(#b)"/>
+<g class="purple"><rect x="190" y="410" width="300" height="56" rx="4"/><text class="th" x="340" y="433" text-anchor="middle">Cible == attendu ?</text><text class="ts" x="340" y="451" text-anchor="middle">puis cible == source brute ?</text></g>
+<line x1="300" y1="466" x2="190" y2="498" class="arr" marker-end="url(#b)"/>
+<line x1="340" y1="466" x2="340" y2="498" class="arr" marker-end="url(#b)"/>
+<line x1="380" y1="466" x2="510" y2="498" class="hl" marker-end="url(#b)"/>
+<g class="green"><rect x="120" y="500" width="130" height="56" rx="4"/><text class="th" x="185" y="523" text-anchor="middle">Conforme</text><text class="ts" x="185" y="541" text-anchor="middle">oui, oui</text></g>
+<g class="teal"><rect x="270" y="500" width="140" height="56" rx="4"/><text class="th" x="340" y="523" text-anchor="middle">Écart justifié</text><text class="ts" x="340" y="541" text-anchor="middle">oui, non</text></g>
+<g class="red"><rect x="430" y="500" width="180" height="56" rx="4"/><text class="th" x="520" y="523" text-anchor="middle">Anomalie</text><text class="ts" x="520" y="541" text-anchor="middle">profil inverse affiché</text></g>
+<line x1="40" y1="590" x2="64" y2="590" class="hl"/>
+<text class="ts freem" x="72" y="594">Chemin de 7254364 : V → permanent → temps partiel → XFLR attendu, JWN trouvé</text>
+</svg>
+</main></body></html>
